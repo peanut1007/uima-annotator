@@ -1,0 +1,64 @@
+package edu.mayo.bmi.uima.drugner.ae
+
+import java.text.DateFormat
+import java.text.ParseException
+import java.util
+import java.util.Calendar
+import java.util.NoSuchElementException
+import javax.swing.text.DateFormatter
+import org.apache.log4j.Logger
+import org.apache.uima.UimaContext
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException
+import org.apache.uima.analysis_engine.annotator.AnnotatorProcessException
+import org.apache.uima.cas.FSIterator
+import org.apache.uima.cas.FeatureStructure
+import org.apache.uima.jcas.JCas
+import org.apache.uima.jcas.JFSIndexRepository
+import org.apache.uima.jcas.cas.FSArray
+import org.apache.uima.jcas.tcas.Annotation
+import org.apache.uima.resource.ResourceAccessException
+import org.apache.uima.resource.ResourceInitializationException
+import edu.mayo.bmi.fsm.ner.machines.elements.DecimalStrengthFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.DosagesFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.DrugChangeStatusFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.DurationFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.FormFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.FractionStrengthFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.FrequencyFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.FrequencyUnitFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.RangeStrengthFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.RouteFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.StrengthFSM
+import edu.mayo.bmi.fsm.ner.machines.elements.StrengthUnitFSM
+import edu.mayo.bmi.fsm.ner.machines.util.SubSectionIndicatorFSM
+import edu.mayo.bmi.fsm.ner.machines.util.SuffixStrengthFSM
+import edu.mayo.bmi.fsm.ner.output.elements.BaseTokenImpl
+import edu.mayo.bmi.fsm.ner.output.elements.DosageToken
+import edu.mayo.bmi.fsm.ner.output.elements.DrugChangeStatusToken
+import edu.mayo.bmi.fsm.ner.output.elements.DurationToken
+import edu.mayo.bmi.fsm.ner.output.elements.FormToken
+import edu.mayo.bmi.fsm.ner.output.elements.FrequencyToken
+import edu.mayo.bmi.fsm.ner.output.elements.FrequencyUnitToken
+import edu.mayo.bmi.fsm.ner.output.elements.RouteToken
+import edu.mayo.bmi.fsm.ner.output.elements.StrengthToken
+import edu.mayo.bmi.fsm.ner.output.elements.StrengthUnitToken
+import edu.mayo.bmi.fsm.ner.output.elements.StrengthUnitCombinedToken
+import edu.mayo.bmi.fsm.ner.output.util.SubSectionIndicator
+import edu.mayo.bmi.fsm.ner.output.util.SuffixStrengthToken
+import edu.mayo.bmi.uima.core.ae.TokenizerAnnotator
+import edu.mayo.bmi.uima.core.fsm.adapters.ContractionTokenAdapter
+import edu.mayo.bmi.uima.core.fsm.adapters.DecimalTokenAdapter
+import edu.mayo.bmi.uima.core.fsm.adapters.IntegerTokenAdapter
+import edu.mayo.bmi.uima.core.fsm.adapters.NewlineTokenAdapter
+import edu.mayo.bmi.uima.core.fsm.adapters.PunctuationTokenAdapter
+import edu.mayo.bmi.uima.core.fsm.adapters.SymbolTokenAdapter
+import edu.mayo.bmi.uima.core.fsm.adapters.WordTokenAdapter
+import edu.mayo.bmi.uima.core._
+import edu.mayo.bmi.uima.drugner._
+import edu.mayo.bmi.uima.drugner.DrugMention
+import edu.mayo.bmi.uima.drugner.elements.DrugChangeStatusElement
+
+
+
+
